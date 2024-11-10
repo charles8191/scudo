@@ -1,4 +1,4 @@
-# hardened_malloc binary 
+# scudo binary 
 
 This is a simple project that builds scudo from Git every Monday and then uploads it, using the Rocky 9 container. There is also a container artifact if you'd like to build it yourself:
 
