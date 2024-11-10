@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Build container
+        run: podman build -t ghcr.io/charles8191/scudo/artifact .
+      - name: Build binary
+        run: |
+          mkdir out
+          podman run -v "$(pwd)/out":/out ghcr.io/charles8191/scudo/artifact
+      - name: Push binary
+        run: |
+          cp out/libscudo.so .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add libscudo.so
+          git commit --allow-empty -m "Upload libscudo.so"
+          git push
+      - name: Push container
+        run: |
+          podman push ghcr.io/charles8191/scudo/artifact
