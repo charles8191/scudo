@@ -10,6 +10,6 @@ podman run -v "$(pwd)/out":/out ghcr.io/charles8191/scudo/artifact
 ## Demo
 
 ```bash
-wget https://github.com/charles8191/hardened_malloc/raw/refs/heads/main/libscudo.so
+wget https://github.com/charles8191/scudo/raw/refs/heads/main/libscudo.so
 LD_PRELOAD=./libscudo.so /bin/echo "Hello, world!"
 ```
